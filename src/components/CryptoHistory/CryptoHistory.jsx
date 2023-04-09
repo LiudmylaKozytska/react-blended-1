@@ -1,7 +1,6 @@
 import { BaseTable, THead, Th, Tr, Td } from './CryptoHistory.styled';
-import { format } from 'date-fns';
 import PropTypes from 'prop-types';
-
+import { formatDate } from 'helpers/formatDateToNow';
 export const CryptoHistory = ({ items }) => {
   return (
     <BaseTable>
@@ -20,7 +19,7 @@ export const CryptoHistory = ({ items }) => {
             <Td>{index + 1}</Td>
             <Td>{item.price}</Td>
             <Td>{item.amount}</Td>
-            <Td>{format(new Date(item.date), 'MM/dd/yyyy, p')}</Td>
+            <Td>{formatDate(item.date)}</Td>
           </Tr>
         ))}
       </tbody>
