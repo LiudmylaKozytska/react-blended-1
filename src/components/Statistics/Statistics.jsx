@@ -3,6 +3,7 @@ import { StatisticsList, StatisticTitle } from './Statistics.styled';
 import { FaRegThumbsUp } from 'react-icons/fa';
 import { MdPeople, MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { GiTreeDoor } from 'react-icons/gi';
+import PropTypes from 'prop-types';
 
 const icons = [
   <FaRegThumbsUp />,
@@ -26,4 +27,11 @@ export const Statistics = ({ title, stats }) => {
       </StatisticsList>
     </>
   );
+};
+
+Statistics.propTypes = {
+  title: PropTypes.string.isRequired,
+  stats: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
+  ).isRequired,
 };
