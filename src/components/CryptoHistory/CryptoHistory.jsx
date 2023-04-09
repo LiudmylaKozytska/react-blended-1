@@ -27,7 +27,6 @@ export const CryptoHistory = ({ items }) => {
     </BaseTable>
   );
 };
-
 CryptoHistory.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
