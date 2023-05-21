@@ -1,49 +1,71 @@
-import article from 'data/article';
-import dataStats from 'data/data.json';
+import { nanoid } from 'nanoid';
+import { useState, useEffect } from 'react';
+
 import {
-  BlogCard,
   Container,
+  Grid,
+  GridItem,
+  Header,
+  SearchForm,
   Section,
-  Heading,
-  Statistics,
-  ForbesList,
-  CryptoHistory,
+  Text,
+  Todo,
 } from 'components';
-import forbesData from 'data/forbes.json';
-import transactions from 'data/transactions.json';
 
 export const App = () => {
+  const [todos, setTodos] = useState(
+    JSON.parse(localStorage.getItem('todos')) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const addTodo = text => {
+    const todo = {
+      id: nanoid(),
+      text,
+    };
+
+    setTodos(prevTodos => [...prevTodos, todo]);
+  };
+
+  const handleSubmit = data => {
+    addTodo(data);
+  };
+
+  const deleteTodo = id => {
+    setTodos(prevTodos => {
+      return prevTodos.filter(todo => todo.id !== id);
+    });
+  };
+
   return (
-    <Section>
-      <Container>
-        <Heading marginBottom="50px" textAlign="center">
-          Task 1
-        </Heading>
-        <BlogCard
-          name={article.name}
-          postedAt={article.postedAt}
-          poster={article.poster}
-          tag={article.tag}
-          title={article.title}
-          description={article.description}
-          avatar={article.avatar}
-        />
+    <>
+      <Header />
+      <Section>
+        <Container>
+          <SearchForm onSubmit={handleSubmit} />
 
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 2
-        </Heading>
-        <Statistics title="My statistics" stats={dataStats} />
+          {todos.length === 0 && (
+            <Text textAlign="center">There are no any todos ... </Text>
+          )}
 
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 3
-        </Heading>
-        <ForbesList list={forbesData} />
-
-        <Heading marginTop="50px" marginBottom="50px" textAlign="center">
-          Task 4
-        </Heading>
-        <CryptoHistory items={transactions} />
-      </Container>
-    </Section>
+          <Grid>
+            {todos.length > 0 &&
+              todos.map((todo, index) => (
+                <GridItem key={todo.id}>
+                  <Todo
+                    id={todo.id}
+                    text={todo.text}
+                    counter={index + 1}
+                    onClick={deleteTodo}
+                  />
+                </GridItem>
+              ))}
+          </Grid>
+        </Container>
+      </Section>
+    </>
   );
 };
